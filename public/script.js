@@ -3,10 +3,10 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-const user = prompt("Enter your name");
+const user = prompt("What is your username?");
 
 var peer = new Peer({
-    host: "192.168.192.11",
+    host: "192.168.192.55",
     port: 3030,
     path: "/peerjs",
     config: {
@@ -37,15 +37,17 @@ var peer = new Peer({
 });
 
 let myVideoStream;
+console.log("Trying to get the video stream");
 navigator.mediaDevices
     .getUserMedia({
-        audio: true,
         video: true,
     })
     .then((stream) => {
         myVideoStream = stream;
-        addVideoStream(myVideo, stream);
-
+        console.log("I am inside this loop");
+        if(user === "admin"){
+	   addVideoStream(myVideo, stream);
+	}
         peer.on("call", (call) => {
             console.log("someone call me");
             call.answer(stream);
