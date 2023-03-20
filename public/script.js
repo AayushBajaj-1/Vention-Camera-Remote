@@ -45,16 +45,15 @@ navigator.mediaDevices
     .then((stream) => {
         myVideoStream = stream;
         console.log("I am inside this loop");
-        if(user === "admin"){
-	   addVideoStream(myVideo, stream);
-	}
         peer.on("call", (call) => {
             console.log("someone call me");
             call.answer(stream);
             const video = document.createElement("video");
             call.on("stream", (userVideoStream) => {
-                addVideoStream(video, userVideoStream);
-            });
+            if(user !="admin"){    
+	            addVideoStream(video, userVideoStream);
+            }
+	    });
         });
 
         socket.on("user-connected", (userId) => {
